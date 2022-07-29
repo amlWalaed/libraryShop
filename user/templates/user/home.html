@@ -1,0 +1,41 @@
+{% extends 'user/layout/afterlogin.html' %}
+{% load static %}
+
+
+
+
+{% block title %}
+    <title>{{user.username}}</title>
+{% endblock %}
+    {% block stytle %}
+
+    <link href="{% static 'books/css/styleproducts.css'%}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+<div class="products">
+    {% if user.is_superuser %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" value="borrow book only" name="bro-only" class="buy">borrow book only</button>
+        <br>
+            <br>
+    </form>
+    {% endif %}
+    {% for book in books %}
+    <div class="books">
+     <span class="img"> <img src="{%static 'books/images/'%}{{book.image}}" width="250" height="250"></span>  <br>
+        <span class="title">{{book.title}}</span><br>
+        <span class="author"><span class="by" style="font-family:cursive; color: #00363a;"> by</span> {{book.author}}</span><br>
+        <a href="{{book.id}}/" class="buy">detail</a>
+        {% if user.is_superuser %}
+        <a  class="edit" href="{%url 'update' book.id %}">edit</a>
+        <a class="Delete" href="{%url 'deletebook' book.id %}" >Delete</a>
+        {% endif %}
+
+
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

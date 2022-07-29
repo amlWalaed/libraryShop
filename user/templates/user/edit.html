@@ -1,0 +1,85 @@
+{% extends 'user/layout/afterlogin.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block title %}
+<title>edit profile</title>
+    {% endblock %}
+    {% block stytle %}
+<style>
+    .div-edituser{
+        margin: auto;
+        width: 40%;
+        padding: 20px;
+        margin-top: 100px;
+        font-weight: bold;
+        color: #4f4f4f;
+        text-align: center;
+        box-shadow:0 0 3px #4f4f4f;
+
+    }
+    small{
+        display: block;
+        margin-bottom: 20px;
+        margin-left: 10px;
+    }
+    input{
+        margin: 10px;
+        border: none;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .btn-save{
+
+        background-color: #4f4f4f;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+    {% endblock %}
+
+
+{% block body %}
+<div class="div-edituser">
+<form method="post" novalidate>
+{% csrf_token %}
+{% if form.non_field_errors%}
+<div class="alert alert-danger" role="alerts">
+{%for error in form.non_field_errors%}
+<p {%if forloop.last%} class="mb-0" {%endif%}>{{error}}</p>
+{%endfor%}
+</div>
+{%endif%}
+{% for field in form %}
+<div class="form-group">
+{{field.label_tag}}
+
+{%if form.is_bound%}
+{%if field.errors%}
+{% render_field field class="form-control is-invalid" %}
+{%for error in field.errors%}
+<div class="invalid-feedback">{{error}}</div>
+{%endfor%}
+{%else%}
+{% render_field field class="form-control is-valid" %}
+{%endif%}
+{%else%}
+{% render_field field class="form-control" %}
+
+{%endif%}
+
+
+</div>
+{%if field.help_text%}
+<small class="form-text text-muted">
+{{field.help_text}}
+</small>
+{%endif%}
+
+{% endfor %}
+<button type="submit" class="btn-save">save</button>
+</form>
+</div>
+{% endblock %}
